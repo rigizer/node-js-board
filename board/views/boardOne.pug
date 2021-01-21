@@ -6,9 +6,9 @@ html
         h1 게시물 조회
         a(href="boardList")
             button(type="button") 목록
-        a(href="modifyBoard?boardNo=" + model.board.board_no)
+        a(href="modifyBoard?boardNo=" + model.board[0].board_no)
             button(type="button") 수정
-        a(href="deleteBoard?boardNo=" + model.board.board_no)
+        a(href="deleteBoard?boardNo=" + model.board[0].board_no)
             button(type="button") 삭제
         table(border="1")
             tr

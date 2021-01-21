@@ -1,0 +1,26 @@
+doctype html
+html
+    head
+        title 게시물 수정
+    body
+        h1 게시물 수정
+        a(href="boardList")
+            button(type="button") 목록
+        form(action="modifyBoard" method="post")
+            table(border="1")
+                tr
+                    th 번호
+                    td #{model.board[0].board_no}
+                tr
+                    th 제목
+                    td
+                        input(type="text" name="boardTitle" value=`${model.board[0].board_title}`)
+                tr
+                    th 내용
+                    td
+                        textarea(name="boardContent" cols="30" rows="5")= model.board[0].board_content
+                tr
+                    th 작성자
+                    td
+                        input(type="text" name="boardUser" value=`${model.board[0].board_user}`)
+            button(type="submit") 수정

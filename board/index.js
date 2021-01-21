@@ -163,12 +163,36 @@ router.get('/boardOne', function(req, res) {
                 model.board = rs;
 
                 // 내용 Form
-                res.render('boardOne', {model: model});                            // Java Forward: views/boardList.pug 뷰 파일 포워드
+                res.render('boardOne', {model: model});                            // Java Forward: views/boardOne.pug 뷰 파일 포워드
             }
         }
     );
+});
 
-    res.render('boardOne', {model: model});                            // Java Forward: views/boardOne.pug 뷰 파일 포워드
+router.get('/modifyBoard', function(req, res) {
+    let model = {};
+
+    let boardNo;
+    if (req.query.boardNo) {
+        boardNo = parseInt(req.query.boardNo);
+    }
+
+    conn.query('SELECT board_no, board_title, board_user, board_date, board_content FROM board WHERE board_no = ?', 
+        [boardNo], 
+        function(err, rs) {
+            if(err) {
+                console.log('쿼리 실행 실패: ' + err);
+                res.end();
+            } else {
+                console.log('내용: ' + JSON.stringify(rs));
+
+                model.board = rs;
+
+                // 내용 Form
+                res.render('modifyBoard', {model: model});                            // Java Forward: views/modifyBoard.pug 뷰 파일 포워드
+            }
+        }
+    );
 });
 
 // 설정된 라우터 미들웨어를 웹 서버에 확장(장착, 이용)
