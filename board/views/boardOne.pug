@@ -1,0 +1,28 @@
+doctype html
+html
+    head
+        title 게시물 조회
+    body
+        h1 게시물 조회
+        a(href="boardList")
+            button(type="button") 목록
+        a(href="modifyBoard?boardNo=" + model.board.board_no)
+            button(type="button") 수정
+        a(href="deleteBoard?boardNo=" + model.board.board_no)
+            button(type="button") 삭제
+        table(border="1")
+            tr
+                th 번호
+                td #{model.board[0].board_no}
+            tr
+                th 제목
+                td #{model.board[0].board_title}
+            tr
+                th 작성자
+                td #{model.board[0].board_content}
+            tr
+                th 작성일
+                td #{model.board[0].board_date}
+            tr
+                th 내용
+                td #{model.board[0].board_content}
