@@ -52,6 +52,16 @@ router.get('/boardList', function(req, res) {
     let rowPerPage = 10;                                // 페이지 당 10개의 데이터를 표시
     let currentPage = 1;                                // 기본적으로 1 페이지 표시
 
+    let searchOption = '';                              // 검색 옵션
+    if (req.query.searchOption) {
+        searchOption = req.query.searchOption;
+    }
+    
+    let search = '';                                    // 검색 내용
+    if (req.query.search) {
+        search = req.query.search;
+    }
+
     if (req.query.currentPage) {
         currentPage = parseInt(req.query.currentPage);
     }
@@ -60,7 +70,29 @@ router.get('/boardList', function(req, res) {
 
     let model = {};
 
-    conn.query('SELECT COUNT(*) as cnt FROM board', 
+    let countQuery = '';
+    let countArgument = [];   
+
+    if (search != '') { // 검색할 문자열이 파라미터로 넘어오는 경우
+        if (searchOption == 'titleContent') {
+            countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_title LIKE CONCAT('%', ?, '%') OR board_content LIKE CONCAT('%', ?, '%')";
+            countArgument = [search, search, beginRow, rowPerPage];
+        } else if (searchOption == 'title') {
+            countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_title LIKE CONCAT('%', ?, '%')";
+            countArgument = [search, beginRow, rowPerPage];
+        } else if (searchOption == 'content') {
+            countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_content LIKE CONCAT('%', ?, '%')";
+            countArgument = [search, beginRow, rowPerPage];
+        } else if (searchOption == 'user') {
+            countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_user LIKE CONCAT('%', ?, '%')";
+            countArgument = [search, beginRow, rowPerPage];
+        }
+    } else {    // 검색할 문자열이 없는 경우
+        countArgument = "SELECT COUNT(*) as cnt FROM board";
+    }
+
+    conn.query(countQuery, 
+        countArgument, 
         function(err, result) {
             if(err) {
                 console.log('쿼리 실행 실패: ' + err);
@@ -74,9 +106,31 @@ router.get('/boardList', function(req, res) {
                     lastPage++;
                 }
             }
+            
+            let searchQuery = '';
+            let searchArgument = [];
+            
+            if (search != '') { // 검색할 문자열이 파라미터로 넘어오는 경우
+                if (searchOption == 'titleContent') {
+                    searchQuery = "SELECT board_no, board_title, board_user, board_date FROM board WHERE board_title LIKE CONCAT('%', ?, '%') OR board_content LIKE CONCAT('%', ?, '%') ORDER BY board_no DESC LIMIT ?, ?";
+                    searchArgument = [search, search, beginRow, rowPerPage];
+                } else if (searchOption == 'title') {
+                    searchQuery = "SELECT board_no, board_title, board_user, board_date FROM board WHERE board_title LIKE CONCAT('%', ?, '%') ORDER BY board_no DESC LIMIT ?, ?";
+                    searchArgument = [search, beginRow, rowPerPage];
+                } else if (searchOption == 'content') {
+                    searchQuery = "SELECT board_no, board_title, board_user, board_date FROM board WHERE board_content LIKE CONCAT('%', ?, '%') ORDER BY board_no DESC LIMIT ?, ?";
+                    searchArgument = [search, beginRow, rowPerPage];
+                } else if (searchOption == 'user') {
+                    searchQuery = "SELECT board_no, board_title, board_user, board_date FROM board WHERE board_user LIKE CONCAT('%', ?, '%') ORDER BY board_no DESC LIMIT ?, ?";
+                    searchArgument = [search, beginRow, rowPerPage];
+                }
+            } else {    // 검색할 문자열이 없는 경우
+                searchQuery = "SELECT board_no, board_title, board_user, board_date FROM board ORDER BY board_no DESC LIMIT ?, ?"
+                searchArgument = [beginRow, rowPerPage];
+            }
 
-            conn.query('SELECT board_no, board_title, board_user, board_date FROM board ORDER BY board_no DESC LIMIT ?, ?', 
-                [beginRow, rowPerPage], 
+            conn.query(searchQuery, 
+                searchArgument, 
                 function(err, rs) {
                     if(err) {
                         console.log('쿼리 실행 실패: ' + err);
@@ -130,6 +184,12 @@ router.get('/boardList', function(req, res) {
 
                         console.log('navLastPage: ' + navLastPage);
                         model.navLastPage = navLastPage;
+                        
+                        console.log('searchOption: ' + searchOption);
+                        model.searchOption = searchOption;
+
+                        console.log('search: ' + search);
+                        model.search = search;
 
                         model.boardList = rs;
 

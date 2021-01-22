@@ -19,13 +19,25 @@ html
                         a(href="/boardOne?boardNo=" + board.board_no) #{board.board_title}
                     td #{board.board_user}
         if model.currentPage > 1
-            a(href="/boardList?currentPage=" + model.prePage) 이전 &nbsp;
+            a(href="/boardList?currentPage=" + model.prePage + "&searchOption=" + model.searchOption + "&search=" + model.search) 이전 &nbsp;
         -for(var i = model.navFirstPage; i <= model.navLastPage; i++)
             if i <= model.lastPage
-                a(href="/boardList?currentPage=" + i) #{i} &nbsp;
+                a(href="/boardList?currentPage=" + i + "&searchOption=" + model.searchOption + "&search=" + model.search) #{i} &nbsp;
         if model.currentPage < model.lastPage
-            a(href="/boardList?currentPage=" + model.nextPage) 다음 &nbsp;
+            a(href="/boardList?currentPage=" + model.nextPage + "&searchOption=" + model.searchOption + "&search=" + model.search) 다음 &nbsp;
 
         br
         
         button(type="button") #{model.currentPage} / #{model.lastPage}
+
+        br
+
+        form(action="boardList" method="get")
+            select(name="searchOption")
+                option(value="titleContent") 제목+내용
+                option(value="title") 제목
+                option(value="content") 내용
+                option(value="user") 작성자
+
+            input(type="text" name="search" value=`${model.search}`)
+            button(type="submit") 검색
