@@ -10,7 +10,9 @@ html
             table(border="1")
                 tr
                     th 번호
-                    td #{model.board[0].board_no}
+                    td 
+                        input(type="hidden" name="boardNo" value=`${model.board[0].board_no}`)
+                        | #{model.board[0].board_no}
                 tr
                     th 제목
                     td

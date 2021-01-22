@@ -39,11 +39,10 @@ router.post('/addBoard', function(req, res) {
         function(err, result) {
             if(err) {   // 쿼리 실패
                 console.log('쿼리 실행 실패: ' + err);
-                return;
+                res.end();
             } else {    // 쿼리 성공
                 console.log('쿼리 실행 성공');
                 res.redirect('boardList');
-                return;
             }
         }
     );
@@ -190,6 +189,62 @@ router.get('/modifyBoard', function(req, res) {
 
                 // 내용 Form
                 res.render('modifyBoard', {model: model});                            // Java Forward: views/modifyBoard.pug 뷰 파일 포워드
+            }
+        }
+    );
+});
+
+router.post('/modifyBoard', function(req, res) {
+    // 입력 처리하는 기능함수 호출: 데이터베이스 쿼리 호출
+    console.log('/modifyBoard POST 요청');
+    
+    // Java의 request.getParameter(''); 역할
+    let boardNo = req.body.boardNo;
+    let boardTitle = req.body.boardTitle;
+    let boardContent = req.body.boardContent;
+    let boardUser = req.body.boardUser;
+
+    conn.query('UPDATE board SET board_title = ?, board_content = ?, board_user = ? WHERE board_no = ?', 
+        [boardTitle, boardContent, boardUser, boardNo], 
+        function(err, result) {
+            if(err) {   // 쿼리 실패
+                console.log('쿼리 실행 실패: ' + err);
+                res.end();
+            } else {    // 쿼리 성공
+                console.log('쿼리 실행 성공');
+                res.redirect('boardOne?boardNo='+boardNo);
+            }
+        }
+    );
+});
+
+router.get('/deleteBoard', function(req, res) {
+    let boardNo;
+    if (req.query.boardNo) {
+        boardNo = parseInt(req.query.boardNo);
+    }
+
+    // 내용 Form
+    res.render('deleteBoard', {boardNo: boardNo}); 
+});
+
+router.post('/deleteBoard', function(req, res) {
+    // 입력 처리하는 기능함수 호출: 데이터베이스 쿼리 호출
+    console.log('/deleteBoard POST 요청');
+    
+    // Java의 request.getParameter(''); 역할
+    let boardNo = req.body.boardNo;
+    let boardPw = req.body.boardPw;
+
+    conn.query('DELETE FROM baord WHERE board_no = ? and board_pw = ?', 
+        [boardNo, boardPw], 
+        function(err, result) {
+            if(err) {   // 쿼리 실패
+                console.log('쿼리 실행 실패: ' + err);
+                res.end();
+            } else {    // 쿼리 성공
+                console.log('쿼리 실행 성공');
+                res.redirect('boardList');
             }
         }
     );

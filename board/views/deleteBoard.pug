@@ -1,0 +1,20 @@
+doctype html
+html
+    head
+        title 게시물 삭제
+    body
+        h1 게시물 삭제
+        a(href="boardOne?boardNo="+boardNo)
+            button(type="button") 취소
+        from(action="deleteBoard" method="post")
+            table(border="1")
+                tr
+                    th 게시물 번호
+                    td
+                        input(type="hidden" name="boardNo" value=`${boardNo}`)
+                        | #{boardNo}
+                tr
+                    th 비밀번호
+                    td
+                        input(type="password" name="boardPw")
+            button(type="submit") 삭제
