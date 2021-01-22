@@ -8,7 +8,7 @@ let mariadb = require('mysql');                         // MySQL 모듈(MariaDB 
 let conn = mariadb.createConnection({
     host: 'localhost', 
     user: 'root', 
-    password: 'java1004', 
+    password: 'java1004',
     database: 'board'
 });
 
@@ -88,7 +88,8 @@ router.get('/boardList', function(req, res) {
             countArgument = [search];
         }
     } else {    // 검색할 문자열이 없는 경우
-        countArgument = "SELECT COUNT(*) as cnt FROM board";
+        countQuery = "SELECT COUNT(*) as cnt FROM board";
+        countArgument = [];
     }
 
     conn.query(countQuery, 
@@ -136,8 +137,6 @@ router.get('/boardList', function(req, res) {
                         console.log('쿼리 실행 실패: ' + err);
                         res.end();
                     } else {
-                        console.log('목록: ' + JSON.stringify(rs));
-
                         // 내비게이션에 표시할 페이지 수
                         let navPerPage = 10;
 		
@@ -191,6 +190,7 @@ router.get('/boardList', function(req, res) {
                         console.log('search: ' + search);
                         model.search = search;
 
+                        console.log('boardList: ' + JSON.stringify(rs));
                         model.boardList = rs;
 
                         // 목록 Form
