@@ -76,16 +76,16 @@ router.get('/boardList', function(req, res) {
     if (search != '') { // 검색할 문자열이 파라미터로 넘어오는 경우
         if (searchOption == 'titleContent') {
             countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_title LIKE CONCAT('%', ?, '%') OR board_content LIKE CONCAT('%', ?, '%')";
-            countArgument = [search, search, beginRow, rowPerPage];
+            countArgument = [search, search];
         } else if (searchOption == 'title') {
             countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_title LIKE CONCAT('%', ?, '%')";
-            countArgument = [search, beginRow, rowPerPage];
+            countArgument = [search];
         } else if (searchOption == 'content') {
             countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_content LIKE CONCAT('%', ?, '%')";
-            countArgument = [search, beginRow, rowPerPage];
+            countArgument = [search];
         } else if (searchOption == 'user') {
             countQuery = "SELECT COUNT(*) as cnt FROM board WHERE board_user LIKE CONCAT('%', ?, '%')";
-            countArgument = [search, beginRow, rowPerPage];
+            countArgument = [search];
         }
     } else {    // 검색할 문자열이 없는 경우
         countArgument = "SELECT COUNT(*) as cnt FROM board";
