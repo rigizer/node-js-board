@@ -34,10 +34,22 @@ html
 
         form(action="boardList" method="get")
             select(name="searchOption")
-                option(value="titleContent") 제목+내용
-                option(value="title") 제목
-                option(value="content") 내용
-                option(value="user") 작성자
+                if model.searchOption == "titleContent"
+                    option(value="titleContent" selected) 제목+내용
+                else
+                    option(value="titleContent") 제목+내용
+                if model.searchOption == "title"
+                    option(value="title" selected) 제목
+                else
+                    option(value="title") 제목
+                if model.searchOption == "content"
+                    option(value="content" selected) 내용
+                else
+                    option(value="content") 내용
+                if model.searchOption == "user"
+                    option(value="content" selected) 내용
+                else
+                    option(value="user") 작성자
 
             input(type="text" name="search" value=`${model.search}`)
             button(type="submit") 검색
