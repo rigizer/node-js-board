@@ -1,25 +1,118 @@
 doctype html
 html
     head
-        title 게시판 입력 폼
+        title 게시물 입력
+
+        // Bootstrap Framework 사용
+
+        // Latest compiled and minified CSS
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+
+        // jQuery library
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+
+        // Popper JS
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js")
+
+        // Latest compiled JavaScript
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+
+        // Bootstrap 4 Icons
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous")
+
+        // Google Web Fonts
+        link(rel="preconnect" href="https://fonts.gstatic.com")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap")
+
+        style.
+            .center {
+                margin: auto;
+                text-align: center;
+            }
+
+            .ul-center {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .title {
+                font-family: 'Righteous', cursive;
+            }
+
+            .msg-title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .msg-writer {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .tb-fixed {
+                table-layout: fixed;
+            }
+
+            body {
+                font-family: 'Noto Sans KR', sans-serif;
+            }
+
+            h1 {
+                font-family: 'Do Hyeon', sans-serif;
+            }
+
+            th {
+                background-color: #F9F9FB;
+            }
+
+            a:link {color: black;}
+            a:visited {color: black;}
+            a:active {color: black;}
+            a:hover {color: black;}
     body
-        h1 게시판 입력 폼
-        form(action="/addBoard" method="post")
-            table(border="1")
-                tr
-                    th 비밀번호
-                    td
-                        input(type="password" name="boardPw")
-                tr
-                    th 제목
-                    td
-                        input(type="text" name="boardTitle")
-                tr
-                    th 내용
-                    td
-                        textarea(name="boardContent" cols="30" rows="5")
-                tr
-                    th 작성자
-                    td
-                        input(type="text" name="boardUser")
-            button(type="submit") 글 입력
+        nav(class="navbar navbar-expand-sm bg-dark navbar-dark")
+            div(class="container")
+                a(class="navbar-brand title" href="/boardList") NodeJS-Board
+                ul(class="navbar-nav")
+                    li(class="nav-item")
+                        a(class="nav-link" href="/boardList") 목록
+                    li(class="nav-item")
+                        a(class="nav-link" href="/addBoard") 작성
+        div(class="container center")
+            br
+
+            h1 게시물 입력
+            
+            br
+
+            form(action="/addBoard" method="post")
+                div(class="btn-group" style="float: right;")
+                    button(type="button" class="btn btn-sm btn-dark" onclick="location.href='/boardList'") 목록
+                    button(type="submit" class="btn btn-sm btn-success" style="float: right;") 작성
+                
+                br
+                br
+                
+                table(class="table center")
+                    tr
+                        th 비밀번호
+                        td
+                            input(type="password" class="form-control" name="boardPw")
+                    tr
+                        th 제목
+                        td
+                            input(type="text" class="form-control" name="boardTitle")
+                    tr
+                        th 내용
+                        td
+                            textarea(name="boardContent" class="form-control" cols="30" rows="5")
+                    tr
+                        th 작성자
+                        td
+                            input(type="text" class="form-control" name="boardUser")
+
+        br
